@@ -5,8 +5,8 @@ import { schema } from "../data/schema";
 
 type SchemaValues = z.infer<typeof schema>;
 
-const onValid: SubmitHandler<SchemaValues> = (data) => {
-  console.log(data);
+const onValid: SubmitHandler<SchemaValues> = async ({ email, password }) => {
+  console.log(email, password);
 };
 
 const Form = () => {
@@ -23,14 +23,17 @@ const Form = () => {
     <form
       className="flex flex-col items-center justify-center h-72 w-72p-2 rounded-md"
       onSubmit={handleSubmit(onValid)}>
-      <div>
+      <section>
         <label>사용자 이름</label>
         <input
           id="username"
           type="text"
           className="ml-2 my-2 text-xl border-2 border-gray-500"
           {...register("username", {
-            pattern: /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]$/,
+            pattern: {
+              value: /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]$/,
+              message: "username은 영문,숫자,한글만 입력 가능합니다.",
+            },
           })}
         />
         {!errors.username ? (
@@ -40,8 +43,8 @@ const Form = () => {
             {errors.username?.message}
           </span>
         )}
-      </div>
-      <div>
+      </section>
+      <section>
         <label>이메일</label>
         <input
           id="email"
@@ -60,8 +63,8 @@ const Form = () => {
             {errors.email?.message}
           </span>
         )}
-      </div>
-      <div>
+      </section>
+      <section>
         <label>비밀번호</label>
         <input
           id="password"
@@ -74,8 +77,8 @@ const Form = () => {
             {errors.password.message}
           </span>
         )}
-      </div>
-      <div>
+      </section>
+      <section>
         <label htmlFor="비밀번호 확인">비밀번호 확인</label>
         <input
           id="confirmPasswsord"
@@ -88,9 +91,8 @@ const Form = () => {
             {errors.confirmPassword.message}
           </span>
         )}
-      </div>
+      </section>
       <button
-        // disabled={!isValid}
         className="text-xl bg-gray-300 hover:bg-gray-400 p-2 rounded-md max-w-[10rem] flex ml-2"
         type="submit">
         회원가입
