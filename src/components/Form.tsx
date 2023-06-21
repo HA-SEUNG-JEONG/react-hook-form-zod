@@ -1,25 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-
-// 스키마 정의
-const schema = z
-  .object({
-    username: z.string().refine((val) => val.length >= 3 && val.length <= 10, {
-      message: "username은 3글자 이상 10글자 이하입니다.",
-    }),
-    email: z
-      .string()
-      .min(1, { message: "1글자 이상은 채워주세요." })
-      .email({ message: "유효한 이메일을 입력하세요" }),
-    password: z.string().min(6, "6글자 이상으로 해주세요."),
-  })
-  .required();
+import { schema } from "../data/schema";
 
 type SchemaValues = z.infer<typeof schema>;
 
 const onValid: SubmitHandler<SchemaValues> = (data) => {
-  // console.log(data);
+  console.log(data);
 };
 
 const Form = () => {
@@ -85,6 +72,20 @@ const Form = () => {
         {errors.password && (
           <span className="text-red-500  flex flex-col items-center">
             {errors.password.message}
+          </span>
+        )}
+      </div>
+      <div>
+        <label htmlFor="비밀번호 확인">비밀번호 확인</label>
+        <input
+          id="confirmPasswsord"
+          type="password"
+          className="ml-2 my-2 text-xl border-2 border-gray-500"
+          {...register("confirmPassword")}
+        />
+        {errors.confirmPassword && (
+          <span className="text-red-500  flex flex-col items-center">
+            {errors.confirmPassword.message}
           </span>
         )}
       </div>
