@@ -14,14 +14,14 @@ const Form = () => {
     register,
     handleSubmit,
     formState: { errors },
-    trigger,
   } = useForm<SchemaValues>({
     resolver: zodResolver(schema),
+    mode: "onChange",
   });
 
   return (
     <form
-      className="flex flex-col items-center justify-center h-72 w-72p-2 rounded-md"
+      className="flex flex-col items-center justify-center h-72 p-2 rounded-md"
       onSubmit={handleSubmit(onValid)}>
       <section>
         <label>사용자 이름</label>
@@ -35,7 +35,6 @@ const Form = () => {
               message: "username은 영문,숫자,한글만 입력 가능합니다.",
             },
           })}
-          onChange={() => trigger("username")}
         />
         {!errors.username ? (
           <span className="text-green-500 flex flex-col items-center"></span>
@@ -54,7 +53,6 @@ const Form = () => {
           {...register("email", {
             pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
           })}
-          onChange={() => trigger("email")}
         />
         {errors.email?.type && String(!errors.email) === "pattern" ? (
           <span className="text-green-500 flex flex-col items-center">
@@ -73,7 +71,6 @@ const Form = () => {
           className="ml-2 my-2 text-xl border-2 border-gray-500"
           type="password"
           {...register("password")}
-          onChange={() => trigger("password")}
         />
         {errors.password && (
           <span className="text-red-500  flex flex-col items-center">
@@ -88,7 +85,6 @@ const Form = () => {
           type="password"
           className="ml-2 my-2 text-xl border-2 border-gray-500"
           {...register("confirmPassword")}
-          onChange={() => trigger("confirmPassword")}
         />
         {errors.confirmPassword && (
           <span className="text-red-500  flex flex-col items-center">
